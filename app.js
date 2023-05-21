@@ -4,6 +4,7 @@ const dotenv =require ("dotenv");
 const userRouter  = require("./routes/user-routes");
 const adminRouter = require("./routes/admin-routes");
 const movieRouter = require("./routes/movie-routes");
+const bookingsRouter = require("./routes/booking-routes");
 dotenv.config();
 const app=express();
 app.use(express.json()) ;
@@ -11,7 +12,8 @@ app.use(express.json()) ;
 //middlewares
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
-app.use("/Movie", movieRouter);
+app.use("/movie", movieRouter);
+app.use("/booking", bookingsRouter);
 
 mongoose.connect(`mongodb+srv://komal7840:${process.env.MONGODB_PASSWORD}@cluster0.ttpms5s.mongodb.net/?retryWrites=true&w=majority`)
 .then(()=>
