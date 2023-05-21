@@ -64,6 +64,21 @@ const getAllMovies =async (req,res,next)=>{
 if(!movies){
     return res.status(500).json({message:"Request Fail"})
 }return res. status(200).json({movies});
-}
+};
 
-    module.exports={addMovie, getAllMovies};
+const getMovieById = async (req,res,next)=>{
+    const id=req.params.id;
+    let movie;
+    try{
+        movie=await Movie.findById(id);
+    }catch(err){
+        return console.log(err);
+    }
+    if(!movie){
+        return res.status(404).json({message:"Invalid Movie Id"})
+    }
+    return res. status(200).json({movie});
+
+};
+
+    module.exports={addMovie, getAllMovies, getMovieById};
