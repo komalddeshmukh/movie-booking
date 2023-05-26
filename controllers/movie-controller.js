@@ -1,6 +1,8 @@
 const jwt= require ("jsonwebtoken");
 const Movie = require ("../models/Movie");
-const Admin= require ("../models/Admin")
+const Admin= require ("../models/Admin");
+const { default: mongoose } = require("mongoose");
+
 
 const addMovie= async (req, res, next)=>{
 
@@ -41,7 +43,14 @@ jwt.verify(extractedToken,process.env.SECRET_KEY,(err,decrypted)=>{
             actors,
             admin:adminId,
         });
-  movie= await movie.save();
+
+const session= await mongoose.startSession();
+const adminUser = await Admin.findById(adminId);
+session.startTransaction();
+await movie.save({session})
+adminUser.addedmovies.push(movie);
+await adminUser.save({session});
+await session.commitTransaction();
     }catch(err){
         return console.log(err);
     }
